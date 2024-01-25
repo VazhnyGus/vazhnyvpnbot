@@ -13,20 +13,20 @@ MIB = 9.5367431640625e-07
 def init_db():
     with sq.connect("db/vpn.db") as db:
         db.execute(
-            """CREATE TABLE keys (
+            """CREATE TABLE IF NOT EXISTS keys (
             key_id INTEGER NOT NULL UNIQUE,
             key EXT NOT NULL UNIQUE,
             user_id TEXT NOT NULL)"""
         )
         db.execute(
-            """CREATE TABLE users (
+            """CREATE TABLE IF NOT EXISTS users (
             user_id TEXT NOT NULL,
             user_name TEXT NOT NULL,
             expiry_date INTEGER NOT NULL)"""
         )
     with sq.connect("db/admins.db") as db:
         db.execute(
-            """CREATE TABLE admins (
+            """CREATE TABLE IF NOT EXISTS admins (
             id INTEGER NOT NULL UNIQUE,
             user_id TEXT NOT NULL UNIQUE,
             user_name TEXT NOT NULL,
