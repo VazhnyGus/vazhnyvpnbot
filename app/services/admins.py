@@ -59,3 +59,8 @@ async def change_payment_date(user_id: int, payment_date: str) -> str:
                 f"{escape(date.fromordinal(ordinal_payment_date).strftime('%d.%m.%Y'))}")
     else:
         return f"🛠 Пользователя `{user_id}` не существует"
+
+
+async def get_list_of_users() -> list[int]:
+    users = await get_users_from_db()
+    return [user.id for user in users]

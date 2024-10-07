@@ -5,8 +5,9 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 
 from app.middlewares import IsAdminMiddleware
-from app.services.admins import get_users, get_user, delete_user, delete_key, change_payment_date
+from app.services.admins import get_users, get_user, delete_user, delete_key, change_payment_date, get_list_of_users
 from app.utils.escape import escape
+
 
 admin_router = Router()
 admin_router.message.middleware(IsAdminMiddleware())
@@ -62,6 +63,8 @@ async def handle_message(message: Message, state: FSMContext) -> None:
 async def handle_message_confirm(message: Message, state: FSMContext) -> None:
     if message.text.lower() == "да":
         data = await state.get_data()
-        await message.answer(escape(data["message"]))
+        users = await get_list_of_users()
+        for user in users:
+            await message.bot.send_message(user, escape(data["message"]))
     else:
         await message.answer("🛠 Отправка отменена")
