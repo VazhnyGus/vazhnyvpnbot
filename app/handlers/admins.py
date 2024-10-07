@@ -1,13 +1,19 @@
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
+from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.context import FSMContext
 
 from app.middlewares import IsAdminMiddleware
 from app.services.admins import get_users, get_user, delete_user, delete_key, change_payment_date
-
+from app.utils.escape import escape
 
 admin_router = Router()
 admin_router.message.middleware(IsAdminMiddleware())
+
+
+class MessageState(StatesGroup):
+    message = State()
 
 
 @admin_router.message(Command('users'))
@@ -42,3 +48,20 @@ async def handle_set_date(message: Message) -> None:
     user_id, date = message.text.removeprefix("/set_date ").split()
     msg = await change_payment_date(int(user_id), date)
     await message.answer(msg)
+
+
+@admin_router.message(Command('message'))
+async def handle_message(message: Message, state: FSMContext) -> None:
+    msg = message.text.removeprefix("/message ")
+    await state.set_state(MessageState.message)
+    await state.update_data(message=msg)
+    await message.answer(f"🛠 Вы уверены, что хотите массово отправить сообщение?\n\n>{escape(msg)}")
+
+
+@admin_router.message(MessageState.message)
+async def handle_message_confirm(message: Message, state: FSMContext) -> None:
+    if message.text.lower() == "да":
+        data = await state.get_data()
+        await message.answer(escape(data["message"]))
+    else:
+        await message.answer("🛠 Отправка отменена")
