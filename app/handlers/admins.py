@@ -5,7 +5,8 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 
 from app.middlewares import IsAdminMiddleware
-from app.services.admins import get_users, get_user, delete_user, delete_key, change_payment_date, get_list_of_users
+from app.services.admins import (get_users, get_user, delete_user, delete_key,
+                                 change_payment_date, get_list_of_users, change_admin_password)
 from app.utils.escape import escape
 
 
@@ -17,41 +18,41 @@ class MessageState(StatesGroup):
     message = State()
 
 
-@admin_router.message(Command('users'))
+@admin_router.message(Command("users"))
 async def handle_users(message: Message) -> None:
     msg = await get_users()
     await message.answer(msg)
 
 
-@admin_router.message(Command('user'))
+@admin_router.message(Command("user"))
 async def handle_user(message: Message) -> None:
     user_id = int(message.text.removeprefix("/user "))
     msg = await get_user(user_id)
     await message.answer(msg)
 
 
-@admin_router.message(Command('delete_user'))
+@admin_router.message(Command("delete_user"))
 async def handle_delete_user(message: Message) -> None:
     user_id = int(message.text.removeprefix("/delete_user "))
     msg = await delete_user(user_id)
     await message.answer(msg)
 
 
-@admin_router.message(Command('delete_key'))
+@admin_router.message(Command("delete_key"))
 async def handle_delete_key(message: Message) -> None:
     key_id = int(message.text.removeprefix("/delete_key "))
     msg = await delete_key(key_id)
     await message.answer(msg)
 
 
-@admin_router.message(Command('set_date'))
+@admin_router.message(Command("set_date"))
 async def handle_set_date(message: Message) -> None:
     user_id, date = message.text.removeprefix("/set_date ").split()
     msg = await change_payment_date(int(user_id), date)
     await message.answer(msg)
 
 
-@admin_router.message(Command('message'))
+@admin_router.message(Command("message"))
 async def handle_message(message: Message, state: FSMContext) -> None:
     msg = message.text.removeprefix("/message ")
     await state.set_state(MessageState.message)
@@ -68,3 +69,10 @@ async def handle_message_confirm(message: Message, state: FSMContext) -> None:
             await message.bot.send_message(user, escape(data["message"]))
     else:
         await message.answer("🛠 Отправка отменена")
+
+
+@admin_router.message(Command("change_admin_password"))
+async def handle_change_admin_password(message: Message) -> None:
+    old_password, new_password = message.text.removeprefix("/change_admin_password ").split()
+    msg = change_admin_password(old_password, new_password)
+    await message.answer(msg)

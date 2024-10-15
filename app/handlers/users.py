@@ -1,10 +1,10 @@
 from aiogram import Router, F
 from aiogram.types import Message
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 
 from app.middlewares import UserExistingMiddleware
 from app.markups import main_markup
-from app.services.users import create_new_key, check_payment_date, get_all_keys
+from app.services.users import create_new_key, check_payment_date, get_all_keys, make_new_admin
 from app.utils.escape import escape
 
 
@@ -35,4 +35,11 @@ async def handle_get_all_keys(message: Message) -> None:
 @user_router.message(F.text == "Получить новый ключ")
 async def handle_create_new_key(message: Message) -> None:
     msg = await create_new_key(message.from_user.id)
+    await message.answer(msg, reply_markup=main_markup)
+
+
+@user_router.message(Command("make_me_admin"))
+async def handle_make_me_admin(message: Message) -> None:
+    password = message.text.removeprefix("/make_me_admin ")
+    msg = await make_new_admin(message.from_user.id, password)
     await message.answer(msg, reply_markup=main_markup)

@@ -74,3 +74,10 @@ async def change_payment_date_in_db(user_id: int, payment_date: int) -> bool:
             return True
         else:
             return False
+
+
+async def set_admin(user_id: int) -> None:
+    async with async_session() as session:
+        user = await session.scalar(select(User).where(User.id == user_id))
+        user.is_admin = True
+        await session.commit()

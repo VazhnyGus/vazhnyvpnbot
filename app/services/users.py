@@ -2,7 +2,8 @@ from outline_vpn import OutlineServerErrorException
 from datetime import date
 
 from app.services.outline import create_new_outline_key
-from app.database.requests import add_key_to_db, get_user_info_from_db
+from app.database.requests import add_key_to_db, get_user_info_from_db, set_admin
+from app.utils.config import config
 
 
 KEY_PRICE = 100
@@ -43,3 +44,11 @@ async def get_all_keys(user_id: int) -> str:
         key_id, access_url = key
         msg += f"\n\n{key_id}: `{access_url}`"
     return msg
+
+
+async def make_new_admin(user_id: int, password: str) -> str:
+    if password == config.admin_password:
+        await set_admin(user_id)
+        return "🛠 Теперь вы администратор"
+    else:
+        return "🛠 Неверный пароль"
