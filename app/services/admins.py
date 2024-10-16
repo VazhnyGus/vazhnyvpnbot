@@ -1,10 +1,7 @@
 from datetime import date
 
-from sqlalchemy.sql.functions import current_time
-
 from app.database.requests import (get_users_from_db, get_user_info_from_db, delete_user_from_db,
                                    delete_key_from_db, change_payment_date_in_db)
-from app.utils.config import config
 from app.utils.escape import escape
 
 
