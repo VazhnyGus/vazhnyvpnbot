@@ -12,6 +12,8 @@ RUN --mount=type=secret,id=outline_api_url,env=OUTLINE_API_URL
 RUN --mount=type=secret,id=outline_api_cer,env=OUTLINE_API_CERT
 RUN --mount=type=secret,id=admin_password,env=ADMIN_PASSWORD
 
+ENV DATABASE_URL="sqlite+aiosqlite:////opt/vazhnyvpnbot/database/db.sqlite3"
+
 COPY . .
 
 ENTRYPOINT ["python3", "run.py"]
