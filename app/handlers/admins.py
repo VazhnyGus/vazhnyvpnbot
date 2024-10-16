@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 
 from app.middlewares import IsAdminMiddleware
 from app.services.admins import (get_users, get_user, delete_user, delete_key,
-                                 change_payment_date, get_list_of_users, change_admin_password)
+                                 change_payment_date, get_list_of_users)
 from app.utils.escape import escape
 
 
@@ -69,10 +69,3 @@ async def handle_message_confirm(message: Message, state: FSMContext) -> None:
             await message.bot.send_message(user, escape(data["message"]))
     else:
         await message.answer("🛠 Отправка отменена")
-
-
-@admin_router.message(Command("change_admin_password"))
-async def handle_change_admin_password(message: Message) -> None:
-    old_password, new_password = message.text.removeprefix("/change_admin_password ").split()
-    msg = change_admin_password(old_password, new_password)
-    await message.answer(msg)
