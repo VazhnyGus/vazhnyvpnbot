@@ -19,8 +19,5 @@ jobs:
             outline_api_url: ${{ vars.OUTLINE_API_URL }}
             outline_api_cer: ${{ secrets.OUTLINE_API_CERT }}
             admin_password: ${{ secrets.ADMIN_PASSWORD }}
-  run:
-    runs-on: self-hosted
-    steps:
       - name: docker run
-        run: docker run -d --name vazhnyvpnbot -v g:\dev\vazhnyvpnbot\bind\database:/app/external/database
+        run: docker run -d --name vazhnyvpnbot -v g:\dev\vazhnyvpnbot\bind\database:/app/external/database vazhnyvpnbot
