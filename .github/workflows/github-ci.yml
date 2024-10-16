@@ -14,10 +14,10 @@ jobs:
           context: .
           tags: vazhnyvpnbot:latest
           secrets: |
-            bot_token: ${{ secrets.BOT_TOKEN }}
-            database_url: ${{ vars.DATABASE_URL }}
-            outline_api_url: ${{ vars.OUTLINE_API_URL }}
-            outline_api_cer: ${{ secrets.OUTLINE_API_CERT }}
-            admin_password: ${{ secrets.ADMIN_PASSWORD }}
+            "bot_token=${{ secrets.BOT_TOKEN }}"
+            "database_url=${{ vars.DATABASE_URL }}"
+            "outline_api_url=${{ vars.OUTLINE_API_URL }}"
+            "outline_api_cer=${{ secrets.OUTLINE_API_CERT }}"
+            "admin_password=${{ secrets.ADMIN_PASSWORD }}"
       - name: docker run
         run: docker run -d --rm vazhnyvpnbot --name vazhnyvpnbot -v /mnt/g/dev/vaszhnyvpnbot/app/database/db.sqlite3:/opt/vazhnyvpnbot/database/db.sqlite3 vazhnyvpnbot
