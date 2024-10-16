@@ -9,13 +9,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: docker build
-        uses: docker/build-push-actions@v6
-        tags: vazhnyvpnbot:latest
-        secrets: |
-          bot_token: ${{ secrets.BOT_TOKEN }}
-          database_url: ${{ vars.DATABASE_URL }}
-          outline_api_url: ${{ vars.OUTLINE_API_URL }}
-          outline_api_cer: ${{ secrets.OUTLINE_API_CERT }}
-          admin_password: ${{ secrets.ADMIN_PASSWORD }}
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: .
+          tags: vazhnyvpnbot:latest
+          secrets: |
+            bot_token: ${{ secrets.BOT_TOKEN }}
+            database_url: ${{ vars.DATABASE_URL }}
+            outline_api_url: ${{ vars.OUTLINE_API_URL }}
+            outline_api_cer: ${{ secrets.OUTLINE_API_CERT }}
+            admin_password: ${{ secrets.ADMIN_PASSWORD }}
       - name: docker run
         run: docker run -d --name vazhnyvpnbot -v g:\dev\vazhnyvpnbot\bind\database:/app/external/database
