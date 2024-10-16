@@ -20,4 +20,4 @@ jobs:
             outline_api_cer: ${{ secrets.OUTLINE_API_CERT }}
             admin_password: ${{ secrets.ADMIN_PASSWORD }}
       - name: docker run
-        run: docker run -d --name vazhnyvpnbot -v g:\dev\vazhnyvpnbot\bind\database:/app/external/database vazhnyvpnbot
+        run: docker run -d --name vazhnyvpnbot -v g:\dev\vazhnyvpnbot\bind\database://app/external/database vazhnyvpnbot
