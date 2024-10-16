@@ -67,11 +67,3 @@ async def change_payment_date(user_id: int, payment_date: str) -> str:
 async def get_list_of_users() -> list[int]:
     users = await get_users_from_db()
     return [user.id for user in users]
-
-
-def change_admin_password(old_password: str, new_password: str) -> str:
-    if old_password == config.admin_password:
-        config.set_admin_password(new_password)
-        return "🛠 Новый пароль администратора установлен"
-    else:
-        return "🛠 Неверно указан старый пароль"
