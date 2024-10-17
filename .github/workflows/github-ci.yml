@@ -19,6 +19,5 @@ jobs:
             "outline_api_url=${{ vars.OUTLINE_API_URL }}"
             "outline_api_cert=${{ secrets.OUTLINE_API_CERT }}"
             "admin_password=${{ secrets.ADMIN_PASSWORD }}"
-      - name: docker run
-        run: docker run -d --rm vazhnyvpnbot --name vazhnyvpnbot \
-          -v /mnt/g/dev/vaszhnyvpnbot/app/database/db.sqlite3:/opt/vazhnyvpnbot/database/db.sqlite3 vazhnyvpnbot
+      - name: docker compose
+        run: docker compose up -d
