@@ -21,4 +21,4 @@ jobs:
             "admin_password=${{ secrets.ADMIN_PASSWORD }}"
       - name: docker run
         run: docker run -d --rm vazhnyvpnbot --name vazhnyvpnbot \
-          -v /mnt/g/dev/vaszhnyvpnbot/app/database/db.sqlite3:/app/database/db.sqlite3 vazhnyvpnbot
+          -v /mnt/g/dev/vaszhnyvpnbot/app/database:/app/database vazhnyvpnbot
