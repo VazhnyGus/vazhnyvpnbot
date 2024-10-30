@@ -13,6 +13,7 @@ jobs:
         with:
           context: .
           tags: vazhnyvpnbot:latest
+          network: host
       - name: stop and remove old containers
         run: docker-compose -f docker-compose.yml down
       - name: deploy
