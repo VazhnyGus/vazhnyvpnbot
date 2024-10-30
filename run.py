@@ -22,6 +22,8 @@ async def main() -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(
-        filename=".log", level=logging.ERROR, format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+        filename="/app/external/logs/.log",
+        level=logging.ERROR,
+        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
     )
     asyncio.run(main())

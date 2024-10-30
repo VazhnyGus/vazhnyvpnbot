@@ -11,3 +11,4 @@ services:
     volumes:
       - /opt/outline/persisted-state:/app/external/outline
       - /etc/vazhnyvpnbot/database:/app/external/database
+      - /etc/vazhnyvpnbot/logs:/app/external/logs
