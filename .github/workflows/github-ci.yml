@@ -8,14 +8,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: setup docker buildx
-        uses: docker/setup-buildx-action@v3
       - name: docker build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.9.0
         with:
           context: .
           tags: vazhnyvpnbot:latest
-          build-args: DNS=8.8.8.8
       - name: stop and remove old containers
         run: docker-compose -f docker-compose.yml down
       - name: deploy
