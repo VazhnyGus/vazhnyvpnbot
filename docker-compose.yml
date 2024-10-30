@@ -1,0 +1,13 @@
+version: '1.0.0'
+services:
+  app:
+    image: vazhnyvpnbot:latest
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - DATABASE_URL=${DATABASE_URL}
+      - OUTLINE_API_URL=${OUTLINE_API_URL}
+      - OUTLINE_API_CERT=${OUTLINE_API_CERT}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    volumes:
+      - /opt/outline/persisted-state:/app/external/outline
+      - /etc/vazhnyvpnbot/database:/app/external/database

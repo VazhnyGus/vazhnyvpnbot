@@ -8,17 +8,17 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: setup docker buildx
+        uses: docker/setup-buildx-action@v2
       - name: docker build
-        uses: docker/build-push-action@v6.9.0
-        with:
-          context: .
-          tags: vazhnyvpnbot:latest
-          build-args: |
-            "bot_token=${{ secrets.BOT_TOKEN }}"
-            "database_url=${{ vars.DATABASE_URL }}"
-            "outline_api_url=${{ vars.OUTLINE_API_URL }}"
-            "outline_api_cert=${{ secrets.OUTLINE_API_CERT }}"
-            "admin_password=${{ secrets.ADMIN_PASSWORD }}"
-      - name: docker run
-        run: docker run -d --rm vazhnyvpnbot --name vazhnyvpnbot \
-          -v /mnt/g/dev/vaszhnyvpnbot/app/database:/app/database vazhnyvpnbot
+        run: docker build -t vazhnyvpnbot:latest
+      - name: stop and remove old containers
+        run: docker-compose -f docker-compose.yml down
+      - name: deploy
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          DATABASE_URL: ${{ vars.DATABASE_URL }}
+          OUTLINE_API_URL: ${{ vars.OUTLINE_API_URL }}
+          OUTLINE_API_CERT: ${{ secrets.OUTLINE_API_CERT }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: docker-compose -f docker-compose.yml up -d
