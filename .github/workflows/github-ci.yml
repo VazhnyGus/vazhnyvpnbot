@@ -15,6 +15,7 @@ jobs:
         with:
           context: .
           tags: vazhnyvpnbot:latest
+          build-args: DNS=8.8.8.8
       - name: stop and remove old containers
         run: docker-compose -f docker-compose.yml down
       - name: deploy
