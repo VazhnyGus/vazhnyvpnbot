@@ -18,7 +18,7 @@ async def create_new_key(user_id: int, user_name: str, bot: Bot) -> str:
         access_url = key.access_url
         await add_key_to_db(key_id, access_url, user_id)
         admins = await get_admins_ids()
-        admin_msg = f"🛠 Пользователь {user_name} (`{user_id}`) получил новый ключ"
+        admin_msg = f"🛠 Пользователь {user_name} \(`{user_id}`\) получил новый ключ"
         for admin in admins:
             await bot.send_message(admin, admin_msg, reply_markup=main_markup)
         return (f"Вот твой новый ключ 🔑\n\n`{access_url}`\n\nСкопируй, нажав на него, и добавь в приложение Outline"
