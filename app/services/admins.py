@@ -1,7 +1,10 @@
 from datetime import date
 
+from sqlalchemy.util import await_fallback
+
 from app.database.requests import (get_users_from_db, get_user_info_from_db, delete_user_from_db,
                                    delete_key_from_db, change_payment_date_in_db)
+from app.services.outline import delete_outline_key
 from app.utils.escape import escape
 
 
@@ -46,7 +49,7 @@ async def delete_user(user_id: int) -> str:
 
 
 async def delete_key(key_id: int) -> str:
-    if await delete_key_from_db(key_id):
+    if await delete_key_from_db(key_id) and await delete_outline_key(key_id):
         return f"🛠 Ключ `{key_id}` успешно удален"
     else:
         return f"🛠 Ключа с id `{key_id}` не существует"
