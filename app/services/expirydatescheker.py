@@ -2,7 +2,7 @@ import asyncio
 from aiogram import Bot
 from datetime import date
 
-from app.database.requests import get_users_from_db, get_user_info_from_db
+from app.database.requests import get_users_from_db, get_user_info_from_db, get_admins_ids
 from app.utils.escape import escape
 from app.services.users import KEY_PRICE
 
@@ -22,7 +22,7 @@ async def check_expired_dates(bot: Bot) -> None:
                 msg = (f"💸 Оплата закончилась {escape(date.fromordinal(user.payment_date).strftime('%d.%m.%Y'))}\n"
                        f"Внеси {KEY_PRICE * user_keys_quantity}₽ или более для продления обслуживания")
                 await bot.send_message(user.id, msg)
-            admins = [user.id for user in users if user.is_admin is True]
+            admins = await get_admins_ids()
             for admin in admins:
                 expired = "\n".join([
                     f"`{user.id}` \| {escape(user.name)} \| "

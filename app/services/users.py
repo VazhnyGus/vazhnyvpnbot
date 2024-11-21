@@ -1,20 +1,26 @@
+from aiogram import Bot
 from outline_vpn import OutlineServerErrorException
 from datetime import date
 
 from app.services.outline import create_new_outline_key
-from app.database.requests import add_key_to_db, get_user_info_from_db, set_admin
+from app.database.requests import add_key_to_db, get_user_info_from_db, set_admin, get_admins_ids
+from app.markups import main_markup
 from app.utils.config import config
 
 
 KEY_PRICE = 100
 
 
-async def create_new_key(user_id: int) -> str:
+async def create_new_key(user_id: int, user_name: str, bot: Bot) -> str:
     try:
         key = await create_new_outline_key()
         key_id = key.key_id
         access_url = key.access_url
         await add_key_to_db(key_id, access_url, user_id)
+        admins = await get_admins_ids()
+        admin_msg = f"🛠 Пользователь {user_name} (`{user_id}`) получил новый ключ"
+        for admin in admins:
+            await bot.send_message(admin, admin_msg, reply_markup=main_markup)
         return (f"Вот твой новый ключ 🔑\n\n`{access_url}`\n\nСкопируй, нажав на него, и добавь в приложение Outline"
                 f"\n\n💰 Не забудь оплатить его")
     except OutlineServerErrorException:

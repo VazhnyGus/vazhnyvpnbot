@@ -1,10 +1,12 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
+from sqlalchemy.sql.operators import from_
 
 from app.middlewares import UserExistingMiddleware
 from app.markups import main_markup
 from app.services.users import create_new_key, check_payment_date, get_all_keys, make_new_admin
+from app.database.requests import get_admins_ids
 from app.utils.escape import escape
 
 
@@ -34,7 +36,7 @@ async def handle_get_all_keys(message: Message) -> None:
 
 @user_router.message(F.text == "Получить новый ключ")
 async def handle_create_new_key(message: Message) -> None:
-    msg = await create_new_key(message.from_user.id)
+    msg = await create_new_key(message.from_user.id, message.from_user.first_name, message.bot)
     await message.answer(msg, reply_markup=main_markup)
 
 

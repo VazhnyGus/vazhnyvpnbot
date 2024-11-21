@@ -1,3 +1,5 @@
+from zoneinfo import reset_tzpath
+
 from sqlalchemy import select
 
 from app.database.models import async_session
@@ -81,3 +83,9 @@ async def set_admin(user_id: int) -> None:
         user = await session.scalar(select(User).where(User.id == user_id))
         user.is_admin = True
         await session.commit()
+
+
+async def get_admins_ids() -> list[int]:
+    async with async_session() as session:
+        users = await session.scalars(select(User))
+        return [user.id for user in users.all() if user.is_admin == True]
