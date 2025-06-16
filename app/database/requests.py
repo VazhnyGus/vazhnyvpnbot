@@ -53,7 +53,7 @@ async def delete_key_from_db(key_id: int) -> bool:
     async with async_session() as session:
         key = await session.scalar(select(Key).where(Key.id == key_id))
         if key:
-            session.delete(key)
+            await session.delete(key)
             await session.commit()
             return True
         else:
