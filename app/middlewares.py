@@ -31,10 +31,3 @@ class UserExistingMiddleware(BaseMiddleware):
         is_user = await check_user(event.from_user.id)
         if is_user:
             return await handler(event, data)
-        else:
-            await add_user_to_db(event.from_user.id, event.from_user.first_name)
-            await event.answer(
-                f"Привет, {event.from_user.first_name} 👋🏻"
-                f"\nНажми на кнопку, чтобы перейти к меню\n\n👇👇👇",
-                reply_markup=start_markup
-            )
