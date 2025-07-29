@@ -8,7 +8,6 @@ from app.handlers.admins import admin_router
 from app.handlers.users import user_router
 from app.database.models import create_tables_async
 from app.utils.config import config
-from app.services.expirydatescheker import check_expired_dates
 
 
 async def main() -> None:
@@ -17,7 +16,7 @@ async def main() -> None:
     dp = Dispatcher()
     dp.include_router(admin_router)
     dp.include_router(user_router)
-    await asyncio.gather(dp.start_polling(bot), check_expired_dates(bot))
+    dp.start_polling(bot)
 
 
 if __name__ == "__main__":
